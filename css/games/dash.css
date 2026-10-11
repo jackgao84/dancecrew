@@ -1,0 +1,60 @@
+/* =========================================================
+   City Dash — crash choice card + end-screen summary
+   (the city itself is drawn on the canvas)
+   ========================================================= */
+.dash-host { background: #BFEBFF; }
+/* the canvas distance-to-Showcase meter is this game's clock: the shell's time bar stays out of the way */
+.game-screen[data-game="dash"] .hud-timer { visibility: hidden; }
+.dash-ui { position: absolute; inset: 0; z-index: 22; pointer-events: none; }
+
+/* ---------- Run it back? ---------- */
+.dash-crash {
+  position: absolute; inset: 0; display: grid; place-items: center; padding: 14px;
+  pointer-events: auto; background: rgba(59, 42, 74, .16);
+  touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+}
+.dc-card {
+  width: min(430px, 100%); display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 16px 18px 14px; text-align: center;
+  background: var(--white); border: var(--line) solid var(--ink); border-radius: 30px; box-shadow: 0 7px 0 var(--ink);
+}
+.dc-line { font-size: 22px; font-weight: 900; }
+.dc-back { width: 100%; padding: 0 22px; animation: dc-glow 1.2s ease-in-out infinite; }
+.dc-back svg.ic { width: 44px; height: 44px; }
+/* a pulse that never moves the button (instant, steady target for small fingers) */
+@keyframes dc-glow { 0%, 100% { box-shadow: 0 6px 0 var(--ink), 0 0 0 0 rgba(255, 122, 182, .55); } 50% { box-shadow: 0 6px 0 var(--ink), 0 0 0 12px rgba(255, 122, 182, 0); } }
+.dc-back:active { animation: none; }
+.dc-charges { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.dc-ch { width: 36px; height: 36px; display: grid; place-items: center; }
+.dc-ch svg.ic { width: 36px; height: 36px; }
+.dc-ch.used { opacity: .25; filter: saturate(0); }
+.dc-ch.gold:not(.used) { animation: dc-glint 1.6s ease-in-out infinite; }
+@keyframes dc-glint { 50% { transform: rotate(-12deg) scale(1.12); } }
+.dc-gold { font-size: 15px; font-weight: 800; color: var(--ink-soft); text-wrap: balance; }
+.dash-crash .dc-keep { min-height: 64px; min-width: 200px; } /* beats .btn.small's 48px */
+.dc-keep svg.ic { width: 18px; height: 18px; }
+
+/* ---------- end screen extras ---------- */
+/* the best-moment line wraps as one sentence (the icon sits in the text) */
+.game-screen[data-game="dash"] .best-moment { display: block; text-align: center; }
+.game-screen[data-game="dash"] .best-moment svg.ic { vertical-align: -6px; margin-right: 2px; }
+.dash-sum { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.dash-sum .tag { font-size: 16px; }
+.dash-sum .tag svg.ic { width: 22px; height: 22px; }
+.dash-sum .tag.mint { background: var(--mint-l); }
+.dash-sum .tag.grape { background: var(--grape); color: var(--white); }
+.dash-gold { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 800; background: var(--yellow-l); border: 3px solid var(--ink); border-radius: 16px; padding: 4px 12px; }
+.dash-gold svg.ic { width: 24px; height: 24px; flex: none; }
+
+@media (max-width: 640px) {
+  .dc-card { gap: 10px; padding: 14px 14px 12px; }
+  .dc-line { font-size: 19px; }
+  .dc-back.huge { min-height: 72px; font-size: 25px; }
+  .dc-back svg.ic { width: 36px; height: 36px; }
+  .dc-ch, .dc-ch svg.ic { width: 30px; height: 30px; }
+  .dash-sum .tag { font-size: 14px; }
+  .dash-gold { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dc-back, .dc-ch.gold:not(.used) { animation: none; }
+}

@@ -1,0 +1,277 @@
+{
+  "_help": "Missions are short scenes. {me} is whoever is playing; {a1} and {a2} are two other crew members; kiko, dash, pip, sunny are friends from other crews. Each node: lines (who + text), heat (added when the node plays, 0-100 meter), expr (faces), then either next, choices, or end. Choice kinds change heat: hot +20, words -15, minute -40 (the strongest cool-down), calm -10, repair -35. \"tense\": true marks a choice point where the heat keeps rising live while the choices wait (optional; defaults to any choice node that adds heat). Lines move on by themselves after 2.5 s + 60 ms per character; the line right before choices always waits. Endings with repair:true score highest (3). There is no fail state.",
+  "missions": [
+    {
+      "id": "snap",
+      "title": "Snap!",
+      "blurb": "A lace breaks right before your battle round.",
+      "bg": "backstage",
+      "cast": ["me", "a1", "kiko"],
+      "start": "n1",
+      "nodes": {
+        "n1": { "lines": [{ "who": "narrator", "text": "The Park Jam battle starts in two minutes!" }, { "who": "a1", "text": "{me}, you're up first. Ready?" }], "heat": 10, "expr": { "me": "focus", "a1": "grin" }, "next": "n2" },
+        "n2": { "lines": [{ "who": "narrator", "text": "{me} pulls the laces tight… SNAP!" }, { "who": "narrator", "text": "The lace breaks right in half." }], "heat": 30, "tense": true, "expr": { "me": "wow", "a1": "worried" },
+          "choices": [
+            { "text": "Kick the sneaker across the floor!", "kind": "hot", "to": "hot1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" },
+            { "text": "“Argh! My lace broke and I'm SO frustrated.”", "kind": "words", "to": "fix" }
+          ] },
+        "hot1": { "lines": [{ "who": "narrator", "text": "THUNK! The sneaker bonks the wall." }, { "who": "kiko", "text": "Whoa! You okay?" }, { "who": "narrator", "text": "Everyone gets heated sometimes. What now?" }], "heat": 15, "tense": true, "expr": { "me": "heated", "kiko": "wow" },
+          "choices": [
+            { "text": "Rewind! “Sorry, Kiko. That wasn't cool. Can I try again?”", "kind": "repair", "to": "rep1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" }
+          ] },
+        "rep1": { "lines": [{ "who": "kiko", "text": "No worries. Laces are the WORST." }, { "who": "a1", "text": "Want to fix it together?" }], "heat": -5, "expr": { "me": "calm", "kiko": "grin", "a1": "happy" }, "next": "fix" },
+        "min1": { "lines": [{ "who": "narrator", "text": "{me} sits on the bench and takes three slow breaths." }, { "who": "narrator", "text": "In… and out. The Heat Meter cools down." }], "heat": 0, "expr": { "me": "calm" },
+          "choices": [
+            { "text": "“{a1}, my lace snapped. Can you help?”", "kind": "words", "to": "fix" }
+          ] },
+        "fix": { "lines": [{ "who": "a1", "text": "I've got an idea! Let's borrow the string from your hoodie." }, { "who": "narrator", "text": "It fits perfectly. Good as new!" }], "heat": -5, "expr": { "me": "grin", "a1": "wink" },
+          "choices": [
+            { "text": "“Thanks, {a1}. Sorry I got so grumpy back there.”", "kind": "repair", "to": "endR" },
+            { "text": "“Battle time! Let's GO!”", "kind": "calm", "to": "endC" }
+          ] },
+        "endR": { "lines": [{ "who": "narrator", "text": "{me} laces up and dances the best round of the day." }, { "who": "kiko", "text": "That was SO good!" }], "heat": 0, "expr": { "me": "proud", "kiko": "grin", "a1": "grin" }, "move": "bounce", "end": true, "repair": true },
+        "endC": { "lines": [{ "who": "narrator", "text": "{me} jumps in and dances a great round." }, { "who": "a1", "text": "Nice save!" }], "heat": 0, "expr": { "me": "grin", "a1": "grin" }, "move": "bounce", "end": true, "repair": false }
+      }
+    },
+    {
+      "id": "solo",
+      "title": "Solo Swap",
+      "blurb": "Someone else gets the solo you wanted.",
+      "bg": "studio",
+      "cast": ["me", "a1", "a2"],
+      "start": "n1",
+      "nodes": {
+        "n1": { "lines": [{ "who": "narrator", "text": "The crew is picking who dances the solo." }, { "who": "narrator", "text": "{me} has practised ALL week for this." }], "heat": 10, "expr": { "me": "focus", "a1": "happy", "a2": "happy" }, "next": "n2" },
+        "n2": { "lines": [{ "who": "a2", "text": "And the solo goes to… {a1}!" }, { "who": "a1", "text": "Me? No way! YES!" }], "heat": 35, "tense": true, "expr": { "me": "wow", "a1": "grin", "a2": "happy" },
+          "choices": [
+            { "text": "“That's NOT FAIR!” and stomp out.", "kind": "hot", "to": "hot1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" },
+            { "text": "“I'm really disappointed. I wanted that solo.”", "kind": "words", "to": "talk" }
+          ] },
+        "hot1": { "lines": [{ "who": "narrator", "text": "SLAM goes the door. The studio goes quiet." }, { "who": "narrator", "text": "Everyone gets heated sometimes. It's what happens next that counts." }], "heat": 15, "tense": true, "expr": { "me": "heated", "a1": "worried", "a2": "worried" },
+          "choices": [
+            { "text": "Rewind! Walk back in: “Sorry for slamming. Can I try that again?”", "kind": "repair", "to": "rep1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" }
+          ] },
+        "rep1": { "lines": [{ "who": "a2", "text": "Thanks for coming back. That took guts." }], "heat": -5, "expr": { "me": "calm", "a2": "happy" }, "next": "talk" },
+        "min1": { "lines": [{ "who": "narrator", "text": "{me} gets a drink of water and counts to ten." }, { "who": "narrator", "text": "The disappointed feeling is still there — but smaller." }], "heat": 0, "expr": { "me": "calm" },
+          "choices": [
+            { "text": "“I'm disappointed. I really wanted that solo.”", "kind": "words", "to": "talk" }
+          ] },
+        "talk": { "lines": [{ "who": "a2", "text": "That makes sense. You worked hard." }, { "who": "a2", "text": "How about you lead the big group move instead?" }], "heat": -5, "expr": { "me": "focus", "a2": "happy", "a1": "worried" },
+          "choices": [
+            { "text": "“Deal. And {a1} — congrats. You'll be awesome.”", "kind": "repair", "to": "endR" },
+            { "text": "“Okay. I'll lead the group move.”", "kind": "calm", "to": "endC" }
+          ] },
+        "endR": { "lines": [{ "who": "a1", "text": "Thanks! Will you help me practise my solo?" }, { "who": "narrator", "text": "Two dancers. Two big moments. One happy crew." }], "heat": 0, "expr": { "me": "proud", "a1": "grin", "a2": "grin" }, "move": "wave", "end": true, "repair": true },
+        "endC": { "lines": [{ "who": "narrator", "text": "{me} leads the group move — and it looks great." }], "heat": 0, "expr": { "me": "grin", "a1": "happy", "a2": "grin" }, "move": "wave", "end": true, "repair": false }
+      }
+    },
+    {
+      "id": "cap",
+      "title": "Cap Trouble",
+      "blurb": "Your cap won't go on — and someone keeps trying to help.",
+      "bg": "backstage",
+      "cast": ["me", "a1", "pip"],
+      "start": "n1",
+      "nodes": {
+        "n1": { "lines": [{ "who": "narrator", "text": "Five minutes to showtime. {me} grabs the crew cap." }, { "who": "narrator", "text": "It won't go on. It's squashing everything!" }], "heat": 20, "expr": { "me": "focus", "a1": "happy" }, "next": "n2" },
+        "n2": { "lines": [{ "who": "a1", "text": "Here, let me do it!" }, { "who": "narrator", "text": "{a1} tugs the cap. It's worse. {a1} tugs again." }], "heat": 25, "tense": true, "expr": { "me": "worried", "a1": "focus" },
+          "choices": [
+            { "text": "Shove {a1}'s hands away: “STOP IT!”", "kind": "hot", "to": "hot1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" },
+            { "text": "“Can you stop for a sec? I want to try it myself.”", "kind": "words", "to": "self" }
+          ] },
+        "hot1": { "lines": [{ "who": "a1", "text": "Whoa! I was just trying to help." }, { "who": "narrator", "text": "Everyone gets heated sometimes. The Heat Meter is way up." }], "heat": 15, "tense": true, "expr": { "me": "heated", "a1": "worried" },
+          "choices": [
+            { "text": "Rewind! “Sorry I shoved you. Can I try that again?”", "kind": "repair", "to": "rep1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" }
+          ] },
+        "rep1": { "lines": [{ "who": "a1", "text": "Okay. Thanks for saying sorry." }, { "who": "me", "text": "I'd like to try it myself first, please." }], "heat": -5, "expr": { "me": "calm", "a1": "happy" }, "next": "self" },
+        "min1": { "lines": [{ "who": "narrator", "text": "{me} puts the cap down and shakes out both hands." }, { "who": "narrator", "text": "Shake, shake, shake. Breathe." }], "heat": 0, "expr": { "me": "calm", "a1": "worried" },
+          "choices": [
+            { "text": "“Can I try it myself first? Then you can help.”", "kind": "words", "to": "self" }
+          ] },
+        "self": { "lines": [{ "who": "pip", "text": "Psst! Loosen the strap at the back first." }, { "who": "narrator", "text": "Click. The strap loosens. The cap slides on perfectly." }], "heat": -10, "expr": { "me": "grin", "pip": "wink", "a1": "happy" },
+          "choices": [
+            { "text": "“Thanks, Pip! And sorry, {a1} — I know you were helping.”", "kind": "repair", "to": "endR" },
+            { "text": "“Got it! Showtime!”", "kind": "calm", "to": "endC" }
+          ] },
+        "endR": { "lines": [{ "who": "a1", "text": "Next time I'll ask before I help." }, { "who": "narrator", "text": "Cap on. Crew ready. Lights up!" }], "heat": 0, "expr": { "me": "proud", "a1": "grin", "pip": "grin" }, "move": "pop", "end": true, "repair": true },
+        "endC": { "lines": [{ "who": "narrator", "text": "Cap on. {me} runs to the stage just in time." }], "heat": 0, "expr": { "me": "grin", "a1": "happy", "pip": "happy" }, "move": "pop", "end": true, "repair": false }
+      }
+    },
+    {
+      "id": "glitch",
+      "title": "Speaker Glitch",
+      "blurb": "The music keeps cutting out just when you're nailing it.",
+      "bg": "studio",
+      "cast": ["me", "a2", "dash"],
+      "start": "n1",
+      "nodes": {
+        "n1": { "lines": [{ "who": "narrator", "text": "{me} is dancing the best run-through EVER." }, { "who": "narrator", "text": "Then — the music cuts out." }], "heat": 20, "expr": { "me": "wow", "a2": "focus" }, "next": "n2" },
+        "n2": { "lines": [{ "who": "a2", "text": "Sorry! Fixing it… okay, go!" }, { "who": "narrator", "text": "Three steps in… it cuts out AGAIN." }], "heat": 25, "tense": true, "expr": { "me": "worried", "a2": "worried" },
+          "choices": [
+            { "text": "Yell: “You RUINED it!”", "kind": "hot", "to": "hot1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" },
+            { "text": "“This is so annoying! I was doing so well.”", "kind": "words", "to": "idea" }
+          ] },
+        "hot1": { "lines": [{ "who": "a2", "text": "Hey… I'm trying my best." }, { "who": "narrator", "text": "Everyone gets heated sometimes. {me} can still turn this around." }], "heat": 15, "tense": true, "expr": { "me": "heated", "a2": "worried" },
+          "choices": [
+            { "text": "Rewind! “Sorry for yelling. It's not your fault.”", "kind": "repair", "to": "rep1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" }
+          ] },
+        "rep1": { "lines": [{ "who": "a2", "text": "Thanks. It IS really annoying, huh?" }], "heat": -5, "expr": { "me": "calm", "a2": "happy" }, "next": "idea" },
+        "min1": { "lines": [{ "who": "narrator", "text": "{me} walks a slow lap around the studio." }, { "who": "narrator", "text": "Step… step… step. Cooler already." }], "heat": 0, "expr": { "me": "calm" },
+          "choices": [
+            { "text": "“That was so annoying! I was doing really well.”", "kind": "words", "to": "idea" }
+          ] },
+        "idea": { "lines": [{ "who": "dash", "text": "Hey! No music? Dance to a clap beat!" }, { "who": "narrator", "text": "Clap… clap… clap-clap-clap! It actually works!" }], "heat": -10, "expr": { "me": "grin", "dash": "grin", "a2": "happy" },
+          "choices": [
+            { "text": "“{a2}, thanks for fixing it. Want to clap the beat with me?”", "kind": "repair", "to": "endR" },
+            { "text": "“Clap beat! Let's go!”", "kind": "calm", "to": "endC" }
+          ] },
+        "endR": { "lines": [{ "who": "narrator", "text": "{a2} claps. Dash claps. {me} dances the whole routine." }, { "who": "a2", "text": "Best glitch EVER." }], "heat": 0, "expr": { "me": "proud", "a2": "grin", "dash": "grin" }, "move": "robot", "end": true, "repair": true },
+        "endC": { "lines": [{ "who": "narrator", "text": "{me} finishes the routine to Dash's clap beat." }], "heat": 0, "expr": { "me": "grin", "dash": "grin", "a2": "happy" }, "move": "robot", "end": true, "repair": false }
+      }
+    },
+    {
+      "id": "bumped",
+      "title": "Bumped!",
+      "blurb": "Someone crashes into your big move.",
+      "bg": "studio",
+      "cast": ["me", "pip", "a1"],
+      "start": "n1",
+      "nodes": {
+        "n1": { "lines": [{ "who": "narrator", "text": "The studio is PACKED today." }, { "who": "narrator", "text": "{me} goes for the big spin…" }], "heat": 10, "expr": { "me": "focus", "pip": "happy" }, "next": "n2" },
+        "n2": { "lines": [{ "who": "narrator", "text": "BONK! Pip backs right into {me}." }, { "who": "narrator", "text": "{me} wobbles and lands flat on the floor." }], "heat": 35, "tense": true, "expr": { "me": "wow", "pip": "wow" },
+          "choices": [
+            { "text": "Push Pip: “WATCH IT!”", "kind": "hot", "to": "hot1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" },
+            { "text": "“Ow! You bumped me and it messed up my spin.”", "kind": "words", "to": "sorry" }
+          ] },
+        "hot1": { "lines": [{ "who": "pip", "text": "I… I didn't see you. Sorry." }, { "who": "narrator", "text": "Pip looks like they might cry. Everyone gets heated sometimes." }], "heat": 15, "tense": true, "expr": { "me": "heated", "pip": "worried" },
+          "choices": [
+            { "text": "Rewind! “Sorry I pushed you, Pip. I was just surprised.”", "kind": "repair", "to": "rep1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" }
+          ] },
+        "rep1": { "lines": [{ "who": "pip", "text": "It's okay. It was an accident." }], "heat": -5, "expr": { "me": "calm", "pip": "happy" }, "next": "sorry" },
+        "min1": { "lines": [{ "who": "narrator", "text": "{me} stays on the floor for a second. Big breath." }, { "who": "narrator", "text": "It was an accident. Pip didn't mean it." }], "heat": 0, "expr": { "me": "calm", "pip": "worried" },
+          "choices": [
+            { "text": "“Ow! You bumped me and it messed up my spin.”", "kind": "words", "to": "sorry" }
+          ] },
+        "sorry": { "lines": [{ "who": "pip", "text": "I'm really sorry! I was trying a backwards step." }, { "who": "a1", "text": "Maybe we need spin lanes. Left side for spins, right side for steps?" }], "heat": -5, "expr": { "me": "focus", "pip": "worried", "a1": "happy" },
+          "choices": [
+            { "text": "“Good idea. Pip, want to share the spin lane with me?”", "kind": "repair", "to": "endR" },
+            { "text": "“Okay. I'll spin on the left.”", "kind": "calm", "to": "endC" }
+          ] },
+        "endR": { "lines": [{ "who": "pip", "text": "Really? Yes!" }, { "who": "narrator", "text": "{me} and Pip take turns spinning. Nobody gets bonked." }], "heat": 0, "expr": { "me": "proud", "pip": "grin", "a1": "grin" }, "move": "spin", "end": true, "repair": true },
+        "endC": { "lines": [{ "who": "narrator", "text": "Spin lane on the left. {me} lands it this time!" }], "heat": 0, "expr": { "me": "grin", "pip": "happy", "a1": "happy" }, "move": "spin", "end": true, "repair": false }
+      }
+    },
+    {
+      "id": "battle",
+      "title": "Battle Round",
+      "blurb": "The Neon Owls win the practice battle.",
+      "bg": "park",
+      "cast": ["me", "kiko", "sunny"],
+      "start": "n1",
+      "nodes": {
+        "n1": { "lines": [{ "who": "sunny", "text": "Practice battle! {me} versus Kiko!" }, { "who": "narrator", "text": "Both dancers give it everything." }], "heat": 15, "expr": { "me": "focus", "kiko": "focus", "sunny": "grin" }, "next": "n2" },
+        "n2": { "lines": [{ "who": "sunny", "text": "And the winner is… KIKO!" }, { "who": "kiko", "text": "Woo! Good battle!" }], "heat": 30, "tense": true, "expr": { "me": "wow", "kiko": "grin", "sunny": "happy" },
+          "choices": [
+            { "text": "“Kiko cheated! That's so unfair!”", "kind": "hot", "to": "hot1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" },
+            { "text": "“I really wanted to win. I'm bummed.”", "kind": "words", "to": "talk" }
+          ] },
+        "hot1": { "lines": [{ "who": "kiko", "text": "I didn't cheat…" }, { "who": "narrator", "text": "Losing feels hot and prickly. Everyone gets heated sometimes." }], "heat": 15, "tense": true, "expr": { "me": "heated", "kiko": "worried" },
+          "choices": [
+            { "text": "Rewind! “Sorry, Kiko. You didn't cheat. You were really good.”", "kind": "repair", "to": "rep1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" }
+          ] },
+        "rep1": { "lines": [{ "who": "kiko", "text": "Thanks. You were really good too!" }], "heat": -5, "expr": { "me": "calm", "kiko": "happy" }, "next": "talk" },
+        "min1": { "lines": [{ "who": "narrator", "text": "{me} squeezes both fists tight… then lets go." }, { "who": "narrator", "text": "Squeeze… and let go. The prickly feeling fades." }], "heat": 0, "expr": { "me": "calm" },
+          "choices": [
+            { "text": "“I really wanted to win. I'm bummed.”", "kind": "words", "to": "talk" }
+          ] },
+        "talk": { "lines": [{ "who": "sunny", "text": "Losing a round is how dancers learn. What was your best move?" }, { "who": "kiko", "text": "Your kick-step was SO sharp. Teach me?" }], "heat": -10, "expr": { "me": "happy", "kiko": "grin", "sunny": "happy" },
+          "choices": [
+            { "text": "“Deal! Good battle, Kiko.” — and a high five.", "kind": "repair", "to": "endR" },
+            { "text": "“Maybe next time.”", "kind": "calm", "to": "endC" }
+          ] },
+        "endR": { "lines": [{ "who": "narrator", "text": "SMACK! The loudest high five in the park." }, { "who": "sunny", "text": "THAT is crew spirit." }], "heat": 0, "expr": { "me": "proud", "kiko": "grin", "sunny": "grin" }, "move": "kick", "end": true, "repair": true },
+        "endC": { "lines": [{ "who": "narrator", "text": "{me} takes a breather, then practises the kick-step some more." }], "heat": 0, "expr": { "me": "happy", "kiko": "happy", "sunny": "happy" }, "move": "kick", "end": true, "repair": false }
+      }
+    },
+    {
+      "id": "turn",
+      "title": "My Turn!",
+      "blurb": "Someone keeps picking the song — and it's never your turn.",
+      "bg": "home",
+      "cast": ["me", "a2", "a1"],
+      "start": "n1",
+      "nodes": {
+        "n1": { "lines": [{ "who": "narrator", "text": "Crew practice at home. Everyone takes turns picking the song." }, { "who": "a2", "text": "My pick! This one's a banger." }], "heat": 10, "expr": { "me": "happy", "a2": "grin" }, "next": "n2" },
+        "n2": { "lines": [{ "who": "narrator", "text": "Next song… {a2} picks AGAIN. And again." }, { "who": "a2", "text": "Ooh, one more!" }], "heat": 30, "tense": true, "expr": { "me": "worried", "a2": "grin", "a1": "focus" },
+          "choices": [
+            { "text": "Grab the speaker: “MY TURN!”", "kind": "hot", "to": "hot1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" },
+            { "text": "“Hey, I've been waiting. Can I pick the next one?”", "kind": "words", "to": "fair" }
+          ] },
+        "hot1": { "lines": [{ "who": "a2", "text": "Hey! Careful with that!" }, { "who": "narrator", "text": "Everyone gets heated sometimes. Waiting is hard." }], "heat": 15, "tense": true, "expr": { "me": "heated", "a2": "wow" },
+          "choices": [
+            { "text": "Rewind! Hand it back: “Sorry for grabbing. Can I have the next turn?”", "kind": "repair", "to": "rep1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" }
+          ] },
+        "rep1": { "lines": [{ "who": "a2", "text": "Oh! Sorry — I got carried away. Next one's yours." }], "heat": -10, "expr": { "me": "calm", "a2": "worried" }, "next": "fair" },
+        "min1": { "lines": [{ "who": "narrator", "text": "{me} flops on the sofa and does five bunny breaths." }, { "who": "narrator", "text": "Sniff-sniff-sniff… whoosh. Better." }], "heat": 0, "expr": { "me": "calm" },
+          "choices": [
+            { "text": "“I've been waiting a long time. Can I pick next?”", "kind": "words", "to": "fair" }
+          ] },
+        "fair": { "lines": [{ "who": "a1", "text": "Let's make a turn list so it's fair!" }, { "who": "a2", "text": "Good idea. {me} goes first." }], "heat": -10, "expr": { "me": "grin", "a1": "happy", "a2": "happy" },
+          "choices": [
+            { "text": "“Thanks! Your song was good too, {a2}. Want to dance to mine?”", "kind": "repair", "to": "endR" },
+            { "text": "Pick the song and press play!", "kind": "calm", "to": "endC" }
+          ] },
+        "endR": { "lines": [{ "who": "narrator", "text": "{me} picks a song. Everybody dances. The turn list goes on the fridge." }], "heat": 0, "expr": { "me": "proud", "a1": "grin", "a2": "grin" }, "move": "glide", "end": true, "repair": true },
+        "endC": { "lines": [{ "who": "narrator", "text": "{me}'s song fills the room. Finally!" }], "heat": 0, "expr": { "me": "grin", "a1": "happy", "a2": "happy" }, "move": "glide", "end": true, "repair": false }
+      }
+    },
+    {
+      "id": "again",
+      "title": "One More Time",
+      "blurb": "A new move just won't click.",
+      "bg": "studio",
+      "cast": ["me", "a1", "dash"],
+      "start": "n1",
+      "nodes": {
+        "n1": { "lines": [{ "who": "narrator", "text": "{me} is learning a brand-new move." }, { "who": "narrator", "text": "Try one: wobble. Try two: feet all tangled." }], "heat": 20, "expr": { "me": "focus", "a1": "happy" }, "next": "n2" },
+        "n2": { "lines": [{ "who": "narrator", "text": "Try three: {me} trips over their own sneakers." }, { "who": "a1", "text": "One more time!" }], "heat": 30, "tense": true, "expr": { "me": "worried", "a1": "grin" },
+          "choices": [
+            { "text": "“I'm TERRIBLE at this! I quit!”", "kind": "hot", "to": "hot1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" },
+            { "text": "“This is really hard. I'm getting frustrated.”", "kind": "words", "to": "tip" }
+          ] },
+        "hot1": { "lines": [{ "who": "a1", "text": "Hey, you're not terrible. You're LEARNING." }, { "who": "narrator", "text": "Everyone gets heated sometimes. Even pro dancers." }], "heat": 15, "tense": true, "expr": { "me": "heated", "a1": "worried" },
+          "choices": [
+            { "text": "Rewind! “Sorry I snapped. Can we try it slower?”", "kind": "repair", "to": "rep1" },
+            { "text": "I need a minute.", "kind": "minute", "to": "min1" }
+          ] },
+        "rep1": { "lines": [{ "who": "a1", "text": "Slower is smart. Let's do it together." }], "heat": -5, "expr": { "me": "calm", "a1": "happy" }, "next": "tip" },
+        "min1": { "lines": [{ "who": "narrator", "text": "{me} takes a water break and stretches up tall." }, { "who": "narrator", "text": "Reach… and flop. Reach… and flop." }], "heat": 0, "expr": { "me": "calm" },
+          "choices": [
+            { "text": "“This is really hard and I'm frustrated.”", "kind": "words", "to": "tip" }
+          ] },
+        "tip": { "lines": [{ "who": "dash", "text": "It took me TWENTY tries. Break it into little bits." }, { "who": "narrator", "text": "Step. Pop. Turn. Bit by bit… it clicks!" }], "heat": -10, "expr": { "me": "grin", "dash": "wink", "a1": "wow" },
+          "choices": [
+            { "text": "“Thanks for sticking with me, {a1}. Sorry I got grumpy.”", "kind": "repair", "to": "endR" },
+            { "text": "“I DID IT!”", "kind": "calm", "to": "endC" }
+          ] },
+        "endR": { "lines": [{ "who": "a1", "text": "Anytime. Now teach ME!" }, { "who": "narrator", "text": "Try twenty-one: perfect." }], "heat": 0, "expr": { "me": "proud", "a1": "grin", "dash": "grin" }, "move": "freeze", "end": true, "repair": true },
+        "endC": { "lines": [{ "who": "narrator", "text": "{me} lands the move. Tricky moves just need more tries." }], "heat": 0, "expr": { "me": "grin", "a1": "grin", "dash": "happy" }, "move": "freeze", "end": true, "repair": false }
+      }
+    }
+  ]
+}

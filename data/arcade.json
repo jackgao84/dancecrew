@@ -1,0 +1,81 @@
+{
+  "_help": "Crew-captain lines shown on every Arcade end screen. The shell picks the most fitting group. {me} = player, {captain} = the crew member talking, {n} = how many, {a} and {b} = the two co-op players. Keep lines short, warm and never shaming.",
+  "lines": {
+    "rewinds": [
+      "You ran it back {n} times. That's how crews win.",
+      "Run it back, then keep going. That's the move, {me}.",
+      "{n} rewinds and you kept going. That's crew stuff."
+    ],
+    "rewind1": [
+      "You ran it back and kept going. That's how crews win.",
+      "One rewind, zero quitting. Nice, {me}."
+    ],
+    "chills": [
+      "That chill was a power move.",
+      "You took a breath and came back stronger.",
+      "Pausing when it gets hot? Pro move, {me}."
+    ],
+    "timeouts": [
+      "Taking a minute is never a waste. You came back ready.",
+      "That pause helped. Everyone gets heated sometimes."
+    ],
+    "spots": [
+      "You spotted it early. That's a superpower.",
+      "Noticing early beats reacting late. You're a spotter, {me}!",
+      "You caught {n} sparks before they grew. Crew's got you."
+    ],
+    "coop": [
+      "{a} and {b}: crews win together!",
+      "Two players, one beat. Love that, {a} and {b}.",
+      "{n} in sync! That's teamwork."
+    ],
+    "showdown": [
+      "The Owls said it best: you run it back, you get it.",
+      "Sequence by sequence. That's how you beat a boss."
+    ],
+    "newBest": [
+      "New best! Progress beats perfection.",
+      "New best, {me}! Look at you go."
+    ],
+    "improved": [
+      "Look at that climb. Progress beats perfection.",
+      "Most improved! Every round counts."
+    ],
+    "default": [
+      "Crew's got you, {me}.",
+      "Nice groove. See you next round!",
+      "Every round makes you stronger.",
+      "That's the crew spirit!"
+    ]
+  },
+  "reasons": {
+    "windDown": {
+      "title": "The crew's cooling down",
+      "text": "The Arcade opens again in the morning. Story, closet and the Crew Wall are still open."
+    },
+    "cap": {
+      "title": "That's today's Arcade time",
+      "text": "Your tickets are safe for tomorrow. Story, closet and the Crew Wall are still open!"
+    },
+    "tickets": {
+      "title": "Earn a ticket in real life",
+      "text": "Every real-life point is a ticket. A Rewind is two!"
+    },
+    "practiceLocked": {
+      "title": "Practice unlocks at 3 points",
+      "text": "Earn 3 real-life points today to unlock it."
+    },
+    "practiceDone": {
+      "title": "Practice done for today",
+      "text": "Nice work! Come back tomorrow."
+    },
+    "showdownLocked": {
+      "title": "Showdown opens with the Crew Challenge",
+      "text": "Finish this week's Crew Challenge together to call out the Neon Owls!"
+    },
+    "showdownDone": {
+      "title": "Showdown beaten this week!",
+      "text": "The Neon Owls want a rematch — finish another Crew Challenge together!"
+    }
+  }
+}

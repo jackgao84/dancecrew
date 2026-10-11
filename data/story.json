@@ -1,0 +1,145 @@
+{
+  "_help": "Season 1. Chapters unlock from the Crew Pot (see CHAPTER_POT in js/rules.js). Cast: hero, sib, p1, p2, gp (the crew, in setup order) and kiko, dash, pip, sunny. bg: studio, street, park, rain, stage, backstage, home, rooftop. expr: happy, grin, wow, focus, heated, calm, proud, sleepy, wink, worried. move: bounce, wave, pop, kick, robot, spin, glide, freeze, cheer. prop: flyer, boombox, lace, trophy, mic. x is 0-100 across the panel. Text can use {hero} {sib} {p1} {p2} {gp} {crew} {rival}.",
+  "chapters": [
+    {
+      "title": "The Flyer",
+      "blurb": "A poster on a wall starts everything.",
+      "panels": [
+        { "bg": "street", "caption": "One sunny Saturday, {hero} spots something on the wall…",
+          "cast": [{ "who": "hero", "x": 34, "expr": "wow" }], "props": [{ "type": "flyer", "x": 72, "y": 30 }],
+          "say": [{ "who": "hero", "text": "THE BIG SHOWCASE! Any crew can enter!" }] },
+        { "bg": "home", "caption": "That night, at home…",
+          "cast": [{ "who": "hero", "x": 14, "expr": "grin", "move": "bounce" }, { "who": "sib", "x": 32, "expr": "wow" }, { "who": "p1", "x": 50, "expr": "happy" }, { "who": "p2", "x": 68, "expr": "wow" }, { "who": "gp", "x": 86, "expr": "wink" }],
+          "say": [{ "who": "hero", "text": "Let's make a dance crew. ALL of us!" }, { "who": "gp", "text": "Count me in. I've still got moves." }] },
+        { "bg": "home",
+          "cast": [{ "who": "sib", "x": 30, "expr": "focus" }, { "who": "hero", "x": 64, "expr": "proud", "move": "cheer" }],
+          "say": [{ "who": "sib", "text": "Every crew needs a name…" }, { "who": "hero", "text": "We're {crew}!" }] },
+        { "bg": "studio", "caption": "First day at the dance studio. Another crew is already there.",
+          "cast": [{ "who": "hero", "x": 18, "expr": "wow" }, { "who": "sib", "x": 34, "expr": "happy" }, { "who": "kiko", "x": 62, "expr": "grin", "move": "wave" }, { "who": "dash", "x": 78, "expr": "wink" }, { "who": "pip", "x": 92, "expr": "worried" }],
+          "say": [{ "who": "kiko", "text": "Hey, you're new! We're {rival}." }, { "who": "hero", "text": "We're {crew}. We're entering the Showcase!" }] },
+        { "bg": "studio",
+          "cast": [{ "who": "kiko", "x": 36, "expr": "wink" }, { "who": "pip", "x": 62, "expr": "happy" }],
+          "say": [{ "who": "kiko", "text": "Awesome! May the best groove win. We'll cheer for you either way!" }, { "who": "pip", "text": "Um… cool sneakers." }] },
+        { "bg": "studio", "caption": "Every crew starts with one step. {crew}'s training starts NOW.",
+          "cast": [{ "who": "sib", "x": 14, "expr": "grin", "move": "bounce" }, { "who": "p1", "x": 32, "expr": "grin", "move": "bounce" }, { "who": "hero", "x": 50, "expr": "grin", "move": "bounce" }, { "who": "p2", "x": 68, "expr": "grin", "move": "bounce" }, { "who": "gp", "x": 86, "expr": "grin", "move": "bounce" }],
+          "say": [{ "who": "hero", "text": "Let's GO, crew!" }] }
+      ]
+    },
+    {
+      "title": "Out of Step",
+      "blurb": "Practice gets messy. The crew invents the Rewind.",
+      "panels": [
+        { "bg": "studio", "caption": "First real crew practice.",
+          "cast": [{ "who": "sib", "x": 14, "expr": "focus", "move": "kick" }, { "who": "p1", "x": 32, "expr": "grin" }, { "who": "hero", "x": 50, "expr": "focus", "move": "pop" }, { "who": "p2", "x": 68, "expr": "focus", "move": "wave" }, { "who": "gp", "x": 86, "expr": "happy", "move": "bounce" }],
+          "say": [{ "who": "p1", "text": "Five, six, seven, eight!" }] },
+        { "bg": "studio", "caption": "BUMP! CRASH! Everyone turns a different way at once.",
+          "cast": [{ "who": "sib", "x": 26, "expr": "wow", "flip": true }, { "who": "hero", "x": 48, "expr": "heated" }, { "who": "p1", "x": 72, "expr": "wow", "move": "spin" }],
+          "say": [{ "who": "sib", "text": "Ow! My foot!" }, { "who": "hero", "text": "This is TOO HARD!" }] },
+        { "bg": "studio", "caption": "{hero} stomps off to the corner. Everyone gets heated sometimes.",
+          "cast": [{ "who": "hero", "x": 30, "expr": "heated" }, { "who": "gp", "x": 66, "expr": "calm" }],
+          "say": [{ "who": "gp", "text": "Take a minute. Breathe in… and out. No rush." }] },
+        { "bg": "studio", "caption": "A minute later, {hero} walks back.",
+          "cast": [{ "who": "hero", "x": 40, "expr": "focus" }, { "who": "sib", "x": 68, "expr": "worried" }],
+          "say": [{ "who": "hero", "text": "Sorry I yelled. Can I have a rewind? I want to try that again — the right way." }] },
+        { "bg": "studio",
+          "cast": [{ "who": "p2", "x": 30, "expr": "grin" }, { "who": "sib", "x": 64, "expr": "happy" }],
+          "say": [{ "who": "p2", "text": "A REWIND! Own it, then replay it. I love that." }, { "who": "sib", "text": "Sorry I yelled too. Rewind?" }] },
+        { "bg": "studio", "caption": "New crew rule: anyone can call a Rewind — grown-ups too. And a Rewind is worth DOUBLE.",
+          "cast": [{ "who": "sib", "x": 14, "expr": "grin", "move": "cheer" }, { "who": "p1", "x": 32, "expr": "grin", "move": "bounce" }, { "who": "hero", "x": 50, "expr": "proud", "move": "cheer" }, { "who": "p2", "x": 68, "expr": "grin", "move": "bounce" }, { "who": "gp", "x": 86, "expr": "grin", "move": "cheer" }],
+          "say": [{ "who": "hero", "text": "REWIND RULE!" }] }
+      ]
+    },
+    {
+      "title": "The Rain Jam",
+      "blurb": "A rainy park battle, and a helping hand from the rivals.",
+      "panels": [
+        { "bg": "park", "caption": "The Park Jam — a warm-up battle before the Showcase.",
+          "cast": [{ "who": "sunny", "x": 50, "expr": "grin", "move": "wave" }, { "who": "hero", "x": 18, "expr": "grin" }, { "who": "kiko", "x": 82, "expr": "wink" }], "props": [{ "type": "mic", "x": 58, "y": 52 }],
+          "say": [{ "who": "sunny", "text": "Welcome to the Park Jam! Crews, get READY!" }] },
+        { "bg": "rain", "caption": "Then… the rain comes. And the crew's speaker goes quiet.",
+          "cast": [{ "who": "hero", "x": 30, "expr": "worried" }, { "who": "p1", "x": 62, "expr": "wow" }], "props": [{ "type": "boombox", "x": 46, "y": 78 }],
+          "say": [{ "who": "p1", "text": "Oh no — our speaker's soaked!" }] },
+        { "bg": "rain",
+          "cast": [{ "who": "kiko", "x": 34, "expr": "grin" }, { "who": "hero", "x": 68, "expr": "wow" }], "props": [{ "type": "boombox", "x": 18, "y": 78 }],
+          "say": [{ "who": "kiko", "text": "Use ours! It's waterproof." }, { "who": "hero", "text": "Really? Thanks, Kiko!" }] },
+        { "bg": "rain", "caption": "Pip is next to battle. Pip is shaking.",
+          "cast": [{ "who": "pip", "x": 32, "expr": "worried" }, { "who": "hero", "x": 66, "expr": "focus" }],
+          "say": [{ "who": "pip", "text": "I… I'm too nervous to go." }, { "who": "hero", "text": "Want to go together? Two dancers, one move." }] },
+        { "bg": "rain", "caption": "Two crews. One beat. Nobody cares about the rain now.",
+          "cast": [{ "who": "hero", "x": 36, "expr": "grin", "move": "bounce" }, { "who": "pip", "x": 64, "expr": "grin", "move": "bounce" }] },
+        { "bg": "park", "caption": "The sun comes back out.",
+          "cast": [{ "who": "sunny", "x": 24, "expr": "proud" }, { "who": "dash", "x": 56, "expr": "wink" }, { "who": "sib", "x": 82, "expr": "grin", "move": "cheer" }],
+          "say": [{ "who": "sunny", "text": "Best team spirit today: EVERYONE!" }, { "who": "dash", "text": "See you at the Showcase, {crew}!" }] }
+      ]
+    },
+    {
+      "title": "The Big Wobble",
+      "blurb": "The audition goes blank. Time to bounce back.",
+      "panels": [
+        { "bg": "stage", "caption": "Showcase auditions. Only a few crews get a spot.",
+          "cast": [{ "who": "sunny", "x": 50, "expr": "grin" }, { "who": "hero", "x": 18, "expr": "focus" }, { "who": "gp", "x": 82, "expr": "happy" }], "props": [{ "type": "mic", "x": 58, "y": 52 }],
+          "say": [{ "who": "sunny", "text": "Next up… {crew}!" }] },
+        { "bg": "stage", "caption": "Halfway through the routine, {hero}'s mind goes blank. Totally blank.",
+          "cast": [{ "who": "hero", "x": 50, "expr": "wow" }],
+          "say": [{ "who": "hero", "text": "What comes next?! I forgot!" }] },
+        { "bg": "stage", "caption": "{hero}'s face gets hot. Everyone gets heated sometimes.",
+          "cast": [{ "who": "hero", "x": 36, "expr": "heated" }, { "who": "gp", "x": 68, "expr": "calm" }],
+          "say": [{ "who": "gp", "text": "Hey. Breathe with me. In… two… three. Out… two… three." }] },
+        { "bg": "stage",
+          "cast": [{ "who": "hero", "x": 34, "expr": "focus" }, { "who": "sunny", "x": 70, "expr": "happy" }],
+          "say": [{ "who": "hero", "text": "Rewind? Can we start again from the chorus?" }, { "who": "sunny", "text": "Take it from the chorus!" }] },
+        { "bg": "stage", "caption": "This time, {hero} nails it.",
+          "cast": [{ "who": "sib", "x": 16, "expr": "grin", "move": "robot" }, { "who": "p1", "x": 33, "expr": "grin", "move": "pop" }, { "who": "hero", "x": 50, "expr": "grin", "move": "kick" }, { "who": "p2", "x": 67, "expr": "grin", "move": "pop" }, { "who": "gp", "x": 84, "expr": "grin", "move": "robot" }] },
+        { "bg": "stage",
+          "cast": [{ "who": "sunny", "x": 34, "expr": "proud" }, { "who": "hero", "x": 68, "expr": "proud", "move": "cheer" }], "props": [{ "type": "trophy", "x": 50, "y": 72 }],
+          "say": [{ "who": "sunny", "text": "Bouncing back is the hardest move there is. {crew} — you're IN!" }] }
+      ]
+    },
+    {
+      "title": "Crew Night",
+      "blurb": "Two big ideas. One finale.",
+      "panels": [
+        { "bg": "rooftop", "caption": "The night before the Big Showcase.",
+          "cast": [{ "who": "hero", "x": 20, "expr": "happy" }, { "who": "sib", "x": 40, "expr": "happy" }, { "who": "p2", "x": 62, "expr": "focus" }, { "who": "gp", "x": 82, "expr": "calm" }],
+          "say": [{ "who": "p2", "text": "Okay, crew. Who's doing the big finale?" }] },
+        { "bg": "rooftop",
+          "cast": [{ "who": "sib", "x": 30, "expr": "grin" }, { "who": "hero", "x": 66, "expr": "heated" }],
+          "say": [{ "who": "sib", "text": "Me! I've got a spin idea!" }, { "who": "hero", "text": "But I wanted the finale!" }] },
+        { "bg": "rooftop",
+          "cast": [{ "who": "gp", "x": 50, "expr": "wink" }],
+          "say": [{ "who": "gp", "text": "Two great ideas. What if they became ONE move?" }] },
+        { "bg": "rooftop",
+          "cast": [{ "who": "hero", "x": 34, "expr": "focus" }, { "who": "sib", "x": 66, "expr": "wow" }],
+          "say": [{ "who": "hero", "text": "You spin… then I jump into a Star Freeze!" }, { "who": "sib", "text": "The SPIN FREEZE! That's so good!" }] },
+        { "bg": "rooftop", "caption": "Knock, knock. It's Kiko.",
+          "cast": [{ "who": "kiko", "x": 30, "expr": "worried" }, { "who": "p1", "x": 66, "expr": "grin" }], "props": [{ "type": "lace", "x": 42, "y": 70 }],
+          "say": [{ "who": "kiko", "text": "My lace snapped. Do you have a spare?" }, { "who": "p1", "text": "Crews help crews. Here you go!" }] },
+        { "bg": "rooftop", "caption": "{crew} practises until the stars come out. Tomorrow is the Big Showcase.",
+          "cast": [{ "who": "sib", "x": 16, "expr": "calm", "move": "glide" }, { "who": "p1", "x": 33, "expr": "calm" }, { "who": "hero", "x": 50, "expr": "calm", "move": "glide" }, { "who": "p2", "x": 67, "expr": "calm" }, { "who": "gp", "x": 84, "expr": "sleepy" }] }
+      ]
+    },
+    {
+      "title": "The Big Showcase",
+      "blurb": "The lights. The crowd. The moment.",
+      "finale": true,
+      "panels": [
+        { "bg": "backstage", "caption": "The Big Showcase. The crowd is HUGE.",
+          "cast": [{ "who": "hero", "x": 34, "expr": "worried" }, { "who": "p1", "x": 66, "expr": "calm" }],
+          "say": [{ "who": "hero", "text": "My heart is going boom-boom-boom." }, { "who": "p1", "text": "Mine too. That means it matters." }] },
+        { "bg": "stage",
+          "cast": [{ "who": "sunny", "x": 50, "expr": "grin", "move": "cheer" }], "props": [{ "type": "mic", "x": 58, "y": 52 }],
+          "say": [{ "who": "sunny", "text": "Put your hands together for… {crew}!" }] },
+        { "bg": "stage", "caption": "Halfway through — the music SKIPS. Silence.",
+          "cast": [{ "who": "sib", "x": 20, "expr": "wow" }, { "who": "hero", "x": 50, "expr": "wow" }, { "who": "p2", "x": 80, "expr": "wow" }] },
+        { "bg": "stage", "caption": "{hero} starts clapping the beat. The crew joins in. Then the whole crowd.",
+          "cast": [{ "who": "hero", "x": 50, "expr": "focus", "move": "pop" }, { "who": "gp", "x": 22, "expr": "grin", "move": "pop" }, { "who": "p1", "x": 78, "expr": "grin", "move": "pop" }],
+          "say": [{ "who": "hero", "text": "Keep the beat! CLAP! CLAP!" }] },
+        { "bg": "stage", "caption": "The music comes back just in time for… the SPIN FREEZE!",
+          "cast": [{ "who": "sib", "x": 16, "expr": "grin", "move": "spin" }, { "who": "p1", "x": 33, "expr": "grin", "move": "freeze" }, { "who": "hero", "x": 50, "expr": "proud", "move": "freeze" }, { "who": "p2", "x": 67, "expr": "grin", "move": "freeze" }, { "who": "gp", "x": 84, "expr": "grin", "move": "spin" }] },
+        { "bg": "stage",
+          "cast": [{ "who": "sunny", "x": 16, "expr": "proud" }, { "who": "kiko", "x": 38, "expr": "grin", "move": "cheer" }, { "who": "hero", "x": 62, "expr": "proud", "move": "cheer" }, { "who": "pip", "x": 84, "expr": "grin" }], "props": [{ "type": "trophy", "x": 50, "y": 74 }],
+          "say": [{ "who": "sunny", "text": "The Heart of the Showcase award goes to… {crew}!" }, { "who": "kiko", "text": "You were AMAZING. Dance-off next season?" }] }
+      ]
+    }
+  ]
+}

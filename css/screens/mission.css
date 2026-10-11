@@ -1,0 +1,198 @@
+/* Missions (v2 real-time). Owned by stage 5 (real-time missions).
+   Loaded after app.css, so its phone/portrait rules live here too. */
+/* =========================================================
+   Missions
+   ========================================================= */
+.mission { max-width: 1060px; position: relative; overflow-x: hidden; overflow-x: clip; }
+.mission-stage { position: relative; display: flex; gap: 14px; align-items: stretch; width: 100%; max-width: calc((100dvh - 330px) * 16 / 9 + 110px); margin: 0 auto; }
+.scene-wrap { flex: 1; min-width: 0; }
+.mission-fx { pointer-events: none; z-index: 4; }
+.actor.speaking .av { animation: talk .5s ease-in-out infinite alternate; }
+@keyframes talk { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+.actor.flip.speaking .av { animation: none; }
+.actor .av.squash { animation: squash .45s cubic-bezier(.3, 1.8, .5, 1); }
+
+/* ---------- read-aloud toggle ---------- */
+.read-btn { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 60px; padding: 0 16px 0 10px;
+  background: var(--white); border: var(--line) solid var(--ink); border-radius: 99px; box-shadow: 0 4px 0 var(--ink);
+  font: inherit; font-weight: 900; font-size: 18px; color: var(--ink); touch-action: manipulation; transition: transform .08s, box-shadow .08s; }
+.read-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.read-btn svg.ic { width: 36px; height: 36px; }
+.read-btn[aria-pressed="true"] { background: var(--mint); }
+
+/* ---------- heat meter (live) ---------- */
+.heat { flex: none; width: 84px; display: flex; flex-direction: column; align-items: center; gap: 6px; background: var(--white); border: var(--line) solid var(--ink); border-radius: 24px; box-shadow: 0 6px 0 var(--ink); padding: 10px 6px; transition: background-color .3s; }
+.heat-label { font-weight: 900; font-size: 14px; letter-spacing: .08em; }
+.heat-tube { position: relative; flex: 1; width: 34px; min-height: 120px; border: 4px solid var(--ink); border-radius: 99px; overflow: hidden;
+  background: linear-gradient(0deg, var(--mint) 0, var(--yellow) 40%, var(--orange) 70%, var(--pink) 100%); }
+/* The cream cover slides up as heat rises (transform only — cheap to update every frame). */
+.heat-tube i { position: absolute; left: 0; right: 0; top: 0; height: 100%; background: var(--cream);
+  border-bottom: 4px solid var(--ink); transform: translateY(0); will-change: transform; }
+.heat-hotline { position: absolute; left: -2px; right: -2px; bottom: 67%; height: 0; border-top: 3px dashed var(--ink); opacity: .45; }
+.heat-word { font-weight: 900; font-size: 16px; }
+.heat[data-level="warm"] { background: var(--yellow-l); }
+.heat[data-level="hot"] { background: var(--orange-l); }
+.heat[data-level="hot"] .heat-word { color: #C2410C; }
+.heat.bump { animation: squash .45s cubic-bezier(.3, 1.8, .5, 1); }
+/* Rising: little bubbles fizz up the tube. */
+.heat-tube::after { content: ''; position: absolute; inset: 0; opacity: 0; pointer-events: none;
+  background: radial-gradient(circle at 30% 80%, rgba(255, 255, 255, .9) 0 3px, transparent 4px), radial-gradient(circle at 70% 60%, rgba(255, 255, 255, .8) 0 2.5px, transparent 3.5px), radial-gradient(circle at 45% 40%, rgba(255, 255, 255, .8) 0 2px, transparent 3px);
+  background-size: 100% 60px; }
+.heat.rising .heat-tube::after { opacity: 1; animation: fizz .9s linear infinite; }
+@keyframes fizz { from { background-position: 0 0; } to { background-position: 0 -60px; } }
+.heat.rising .heat-label { animation: flicker .5s ease-in-out infinite alternate; }
+/* Cooling: a mint glow while the meter drains (after a cool-down or a "Take a minute"). */
+.heat.cooling { background: var(--mint-l); }
+.heat.cooling .heat-tube { box-shadow: 0 0 0 4px var(--mint); }
+@keyframes flicker { to { color: #C2410C; } }
+
+/* ---------- dialogue ---------- */
+.dialogue { width: 100%; max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.line {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+  background: var(--white); border: var(--line) solid var(--ink); border-radius: 26px; box-shadow: 0 6px 0 var(--ink);
+  padding: 12px 16px; font: inherit; color: inherit; min-height: 88px; touch-action: manipulation;
+  transition: transform .08s, box-shadow .08s;
+}
+.line.narr { background: var(--yellow-l); }
+.line.pressed { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
+.line-av { width: 64px; height: 64px; flex: none; border-radius: 50%; overflow: hidden; border: 3px solid var(--ink); background: var(--sky-l); }
+.line-text { flex: 1; font-size: 21px; font-weight: 700; }
+.line-text b { display: block; font-size: 15px; color: var(--grape-d); text-transform: uppercase; letter-spacing: .04em; }
+.line-next svg.ic { width: 34px; height: 34px; animation: nudge-r 1s ease-in-out infinite; }
+@keyframes nudge-r { 50% { transform: translateX(5px); } }
+/* How long until the line moves on by itself. */
+.read-bar { position: absolute; left: 22px; right: 22px; bottom: 6px; height: 6px; border-radius: 99px; background: rgba(59, 42, 74, .12); overflow: hidden; }
+.read-bar i { display: block; height: 100%; background: var(--grape); border-radius: 99px; transform-origin: left center; transform: scaleX(0); }
+
+/* ---------- choices + timer ring ---------- */
+.choice-set { display: flex; flex-direction: column; gap: 10px; }
+.choice-head { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 19px; }
+.ring { position: relative; width: 52px; height: 52px; flex: none; display: grid; place-items: center; }
+.ring > svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-bg { fill: var(--white); stroke: var(--ink); stroke-width: 10; }
+.ring-fg { fill: none; stroke: var(--mint); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 100 100; stroke-dashoffset: 0; transition: stroke .3s; }
+.ring > svg.ic { position: relative; inset: auto; width: 22px; height: 22px; transform: none; }
+.ring.low .ring-fg { stroke: var(--orange); }
+.ring.low { animation: ring-pulse .8s ease-in-out infinite; }
+@keyframes ring-pulse { 50% { transform: scale(1.08); } }
+.choices { display: grid; gap: 10px; }
+.choice {
+  display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;
+  background: var(--yellow-l); border: var(--line) solid var(--ink); border-radius: 22px; box-shadow: 0 5px 0 var(--ink);
+  padding: 10px 16px 10px 10px; font: inherit; font-weight: 800; font-size: 20px; min-height: 68px; color: var(--ink); touch-action: manipulation;
+  transition: transform .08s, box-shadow .08s;
+}
+.choice.k-minute { background: var(--mint); }
+.choice.k-words { background: var(--sky); }
+.choice.k-repair { background: var(--grape-l); }
+.choice.k-other { background: var(--yellow); }
+/* Inside 'other': the heated reaction is soft and warm, a calm choice stays bright. */
+.choice.k-other.k-hot { background: var(--orange-l); }
+.choice.k-other.k-calm { background: var(--yellow); }
+.choice:active, .choice.pressed { transform: translateY(4px) scale(.985); box-shadow: 0 1px 0 var(--ink); }
+.kind-ic { width: 50px; height: 50px; flex: none; display: grid; place-items: center; background: var(--white); border: 3px solid var(--ink); border-radius: 50%; }
+.kind-ic svg.ic { width: 36px; height: 36px; }
+.choice-text { flex: 1; min-width: 0; }
+
+/* ---------- "Take a minute" breathing pause ---------- */
+.take-minute { --bg: var(--mint-l); display: flex; align-items: center; gap: 18px; padding: 14px 18px; }
+.breath { position: relative; width: 112px; height: 112px; flex: none; display: grid; place-items: center; }
+.breath > svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.br-track { fill: var(--white); stroke: var(--ink); stroke-width: 5; }
+.br-ring { fill: none; stroke: var(--mint-d); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; }
+.br-bubble { position: relative; width: 78px; height: 78px; border-radius: 50%; background: var(--mint); border: 4px solid var(--ink); display: grid; place-items: center; transform: scale(.62); will-change: transform; box-shadow: inset -6px -6px 0 rgba(59, 42, 74, .12); }
+.br-bubble svg { width: 70%; height: 70%; }
+.tm-text h2 { font-size: clamp(24px, 3.4vw, 32px); }
+.tm-text p { font-size: 20px; font-weight: 800; color: var(--ink-soft); }
+
+/* ---------- intro + results ---------- */
+.mission-intro { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+.how { display: flex; gap: 12px; align-items: center; text-align: left; background: var(--orange-l); border: 3px solid var(--ink); border-radius: 18px; padding: 10px 14px; }
+.how svg.ic { width: 44px; height: 44px; flex: none; }
+.results { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+.results .rs-title { display: block; color: var(--grape-d); }
+.results .new-best { background: var(--pink); color: var(--white); animation: wiggle 1.4s ease-in-out infinite; }
+.results .crew-say { max-width: 100%; }
+.results .crew-say p { font-size: 17px; }
+.notes { display: flex; gap: 10px; }
+.notes span { width: 64px; height: 64px; border-radius: 50%; border: 4px solid var(--ink); background: var(--white); display: grid; place-items: center; }
+.notes span.on { background: var(--yellow-l); animation: pop-in .5s cubic-bezier(.3, 1.8, .5, 1) both; }
+.notes span:nth-child(2) { animation-delay: .15s; } .notes span:nth-child(3) { animation-delay: .3s; }
+.notes svg.ic { width: 40px; height: 40px; }
+.recap { list-style: none; padding: 0; margin: 4px 0; display: flex; flex-direction: column; gap: 6px; text-align: left; font-weight: 800; }
+.recap li { display: flex; align-items: center; gap: 10px; }
+.recap svg.ic { width: 30px; height: 30px; flex: none; }
+/* The spark: a lasting badge for an Early spot, set apart from the three notes. */
+.spark-badge { position: relative; width: 64px; height: 64px; margin-left: 12px; display: grid; place-items: center; animation: pop-in .5s cubic-bezier(.3, 1.8, .5, 1) .45s both; }
+.spark-badge::before { content: ''; position: absolute; inset: 7px; background: var(--grape); border: 4px solid var(--ink); border-radius: 12px; transform: rotate(45deg); }
+.notes .spark-badge > svg.ic { position: relative; width: 32px; height: 32px; }
+.spark-badge .tag { position: absolute; right: -24px; top: -10px; transform: rotate(8deg); background: var(--pink); color: var(--white); padding: 0 8px; font-size: 13px; font-style: normal; white-space: nowrap; }
+.mini-spark { display: grid; place-items: center; width: 100%; margin-top: 4px; }
+.mini-notes .mini-spark svg.ic { width: 30px; height: 30px; }
+.mini-spark.on svg.ic { animation: wiggle 2.4s ease-in-out infinite; }
+.recap .rc-early { background: var(--white); border: 3px solid var(--ink); border-radius: 14px; padding: 2px 10px 2px 4px; }
+.mission-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+.mission-list .big-link > .mini-notes { flex: none; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; width: 84px; gap: 2px; }
+.mini-notes svg.ic { width: 24px; height: 24px; }
+
+/* Landscape tablets: scene on the left, dialogue on the right so choices never fall below the fold. */
+@media (min-width: 900px) and (min-aspect-ratio: 5/4) {
+  .mission { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(320px, 1fr); grid-template-rows: auto 1fr; align-items: start; column-gap: 18px; }
+  .mission > .topbar { grid-column: 1 / -1; }
+  /* The scene is width-bound here, so lift the play area towards the middle of the spare height
+     (fixed per viewport, so nothing jumps when the choices arrive). The tall results card uses it all. */
+  .mission { --lift: clamp(0px, (100dvh - 560px) / 2, 110px); }
+  .mission > .mission-stage, .mission > .dialogue { margin-top: var(--lift); }
+  .mission[data-phase="results"] > .dialogue { margin-top: 0; }
+  .mission-stage { max-width: none; margin: 0; }
+  /* Plenty of height here: a taller scene so the cast (and their body cues) read big. */
+  .mission .comic-panel { aspect-ratio: 4 / 3; max-height: calc(100dvh - 150px); }
+  .dialogue { max-width: none; margin: 0; }
+  .line { min-height: 76px; }
+  .line-text { font-size: 19px; }
+  .choice { font-size: 18px; min-height: 60px; padding: 8px 14px 8px 8px; }
+  .kind-ic { width: 44px; height: 44px; }
+  .kind-ic svg.ic { width: 32px; height: 32px; }
+  .take-minute { flex-direction: column; text-align: center; gap: 10px; }
+}
+
+@media (max-width: 640px) {
+  .line { min-height: 76px; padding: 10px 12px 14px; gap: 10px; }
+  .line-text { font-size: 18px; }
+  .line-av { width: 52px; height: 52px; }
+  .choice { font-size: 17px; min-height: 60px; gap: 10px; padding: 8px 12px 8px 8px; }
+  .kind-ic { width: 42px; height: 42px; }
+  .kind-ic svg.ic { width: 30px; height: 30px; }
+  .choice-head { font-size: 17px; }
+  .ring { width: 44px; height: 44px; }
+  .heat { width: 62px; }
+  .read-btn { height: 52px; padding: 0 12px 0 8px; font-size: 16px; }
+  .read-btn svg.ic { width: 30px; height: 30px; }
+  .heat-tube { width: 26px; }
+  .take-minute { gap: 12px; padding: 12px; }
+  .breath { width: 92px; height: 92px; }
+  .br-bubble { width: 64px; height: 64px; }
+  .tm-text p { font-size: 17px; }
+  .results { gap: 6px; }
+  .notes span { width: 54px; height: 54px; }
+  .spark-badge { width: 54px; height: 54px; }
+  .notes .spark-badge > svg.ic { width: 27px; height: 27px; }
+  .notes svg.ic { width: 34px; height: 34px; }
+  .recap { font-size: 16px; gap: 4px; }
+  .recap svg.ic { width: 26px; height: 26px; }
+  .results .crew-say p { font-size: 16px; }
+  .results .cl-av { width: 46px; height: 46px; }
+}
+/* Grid items must be allowed to shrink (long button labels otherwise push the page sideways). */
+.mission > *, .dialogue, .results { min-width: 0; }
+.results .row { justify-content: center; }
+.results .btn { white-space: normal; text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ring.low, .heat.rising .heat-label, .line-next svg.ic, .results .new-best, .mini-spark.on svg.ic { animation: none !important; }
+  .heat.rising .heat-tube::after { animation: none; }
+  /* The speaker stands still and glows instead of bobbing. */
+  .actor.speaking .av { animation: none; filter: drop-shadow(0 4px 0 rgba(59, 42, 74, .15)) drop-shadow(0 0 3px var(--white)) drop-shadow(0 0 8px var(--yellow)); }
+}

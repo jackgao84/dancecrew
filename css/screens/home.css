@@ -1,0 +1,242 @@
+/* Home stage. Owned by stage 8 (interactivity).
+   Loaded after app.css, so its phone/portrait rules live here too. */
+/* =========================================================
+   Home
+   ========================================================= */
+.stage-panel {
+  position: relative; overflow: hidden;
+  background: linear-gradient(180deg, #7B4FE0 0%, #9B6BFF 55%, #B58CFF 100%);
+  border: var(--line) solid var(--ink); border-radius: 36px; box-shadow: 0 8px 0 var(--ink);
+  padding: 16px 12px 0; min-height: 300px;
+}
+.stage-lights i {
+  position: absolute; top: -40px; width: 180px; height: 420px;
+  background: linear-gradient(180deg, rgba(255, 240, 179, .55), rgba(255, 240, 179, 0));
+  clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%);
+  transform-origin: 50% 0; animation: sweep 6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+.stage-lights i:nth-child(1) { left: 6%; transform: rotate(-18deg); }
+.stage-lights i:nth-child(2) { left: 40%; animation-delay: -2s; background: linear-gradient(180deg, rgba(255, 180, 220, .5), transparent); }
+.stage-lights i:nth-child(3) { right: 6%; transform: rotate(18deg); animation-delay: -4s; background: linear-gradient(180deg, rgba(180, 235, 255, .55), transparent); }
+.stage-hint { position: relative; text-align: center; font-size: 24px; font-weight: 900; z-index: 2; }
+.crew-row { position: relative; z-index: 2; display: flex; justify-content: center; align-items: flex-end; gap: 0; }
+
+/* ---------- a crew member: avatar (tap = dance, hold = drag) + name tag (= their page) ---------- */
+.crew-member {
+  flex: 1 1 0; max-width: 200px; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; position: relative;
+  transition: transform .26s cubic-bezier(.3, 1.4, .5, 1);
+  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+}
+.cm-av {
+  width: 100%; aspect-ratio: 2 / 3; display: block; padding: 0; margin: 0;
+  background: none; border: 0; border-radius: 40px; cursor: pointer;
+  touch-action: manipulation; -webkit-touch-callout: none; transform-origin: 50% 94%;
+}
+.cm-av .av { pointer-events: none; }  /* the button is always the event target (safe to repaint mid-press) */
+.cm-av:active, .cm-av.pressing { transform: scale(.95); }
+.cm-av:focus-visible { outline: 4px solid var(--yellow); outline-offset: -4px; }
+.crew-member .mv-idle .av-all { animation-delay: var(--d); }
+.cm-name {
+  position: relative; z-index: 3; margin-top: -16px; margin-bottom: 12px;
+  min-height: 40px; background: var(--white); border: 3px solid var(--ink); border-radius: 99px; padding: 4px 14px;
+  font-weight: 900; font-size: 18px; max-width: 96%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  box-shadow: 0 3px 0 var(--ink); touch-action: manipulation;
+}
+.cm-name:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.crew-member .tag.new { position: absolute; top: 4px; font-size: 13px; pointer-events: none; transition: opacity .15s; }
+.crew-member.has-bubble .tag.new, .crew-member.dragging .tag.new { opacity: 0; }
+
+/* squash-and-stretch on a tap (the SVG dance move plays inside) */
+.tap-squash { animation: tap-squash .5s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes tap-squash { 0% { transform: scale(1); } 22% { transform: scale(1.16, .84); } 48% { transform: scale(.92, 1.1); } 72% { transform: scale(1.04, .97); } 100% { transform: scale(1); } }
+
+/* "My page" bubble over a dancer */
+.cm-bubble {
+  position: absolute; z-index: 5; top: 0; left: 50%; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 2px; min-height: 48px; padding: 0 8px 0 16px;
+  background: var(--yellow); border: 3px solid var(--ink); border-radius: 99px; box-shadow: 0 4px 0 var(--ink);
+  font-weight: 900; font-size: 18px; white-space: nowrap; touch-action: manipulation;
+  animation: bubble-in .4s cubic-bezier(.3, 1.8, .5, 1) both;
+}
+.cm-bubble::after {
+  content: ''; position: absolute; left: 50%; bottom: -10px; width: 14px; height: 14px; margin-left: -7px;
+  background: var(--yellow); border-right: 3px solid var(--ink); border-bottom: 3px solid var(--ink); transform: rotate(45deg);
+}
+.cm-bubble svg.ic { width: 20px; height: 20px; }
+.cm-bubble:active { transform: translateX(-50%) translateY(2px); box-shadow: 0 2px 0 var(--ink); }
+.cm-bubble.leaving { animation: fade-out .2s ease-in both; }
+
+/* confetti-dot burst on a tap */
+.cm-burst { position: absolute; left: 50%; top: 36%; width: 0; height: 0; z-index: 4; pointer-events: none; }
+.cm-burst i {
+  position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--c); border: 3px solid var(--ink);
+  animation: cm-burst .7s cubic-bezier(.2, .8, .4, 1) forwards;
+}
+.cm-burst i:nth-child(even) { border-radius: 4px; }
+@keyframes cm-burst {
+  from { transform: rotate(var(--a)) translateY(-14px) scale(.4); opacity: 1; }
+  70% { opacity: 1; }
+  to { transform: rotate(var(--a)) translateY(-100px) scale(.9) rotate(90deg); opacity: 0; }
+}
+
+/* ---------- drag to reorder ---------- */
+.crew-member.dragging { z-index: 6; transition: none; will-change: transform; }
+.crew-member.dragging .cm-av { cursor: grabbing; transform: none; position: relative; isolation: isolate; }
+/* a soft floor shadow under the lifted dancer (cheap: no filter repaint while dragging) */
+.crew-member.dragging .cm-av::before {
+  content: ''; position: absolute; z-index: -1; left: 22%; right: 22%; bottom: 0; height: 8%;
+  border-radius: 50%; background: rgba(59, 42, 74, .3); transform: translateY(4px) scaleX(1.15);
+}
+.crew-member.dropping { z-index: 6; transition: transform .2s ease-out; }
+.crew-row.no-anim .crew-member { transition: none !important; }
+.drop-spot {
+  position: absolute; z-index: 0; height: 30px; transform: translate(-50%, -50%);
+  border-radius: 50%; background: rgba(255, 240, 179, .55); border: 4px dashed var(--white);
+  pointer-events: none; transition: left .16s ease-out, top .16s ease-out;
+  animation: pop-in .3s cubic-bezier(.3, 1.8, .5, 1) both;
+}
+
+/* picked up: arms up, feet dangling */
+.mv-held .av-all { animation: held-all .5s ease-in-out infinite alternate; }
+.mv-held .av-armL { animation: held-armL .5s ease-in-out infinite alternate; }
+.mv-held .av-armR { animation: held-armR .5s ease-in-out infinite alternate; }
+.mv-held .av-legL { animation: held-legL .4s ease-in-out infinite alternate; }
+.mv-held .av-legR { animation: held-legR .4s ease-in-out infinite alternate; }
+@keyframes held-all { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+@keyframes held-armL { from { transform: rotate(130deg); } to { transform: rotate(150deg); } }
+@keyframes held-armR { from { transform: rotate(-150deg); } to { transform: rotate(-130deg); } }
+@keyframes held-legL { from { transform: rotate(-10deg); } to { transform: rotate(14deg); } }
+@keyframes held-legR { from { transform: rotate(10deg); } to { transform: rotate(-14deg); } }
+
+/* ---------- idle life: little one-off moves ---------- */
+.idl-hop .av-all { animation: idl-hop .9s cubic-bezier(.3, 1.4, .5, 1); }
+@keyframes idl-hop { 0%, 100% { transform: none; } 20% { transform: translateY(4px) scale(1.08, .92); } 50% { transform: translateY(-22px) scale(.96, 1.05); } 80% { transform: translateY(3px) scale(1.05, .95); } }
+.idl-wave .av-armR { animation: idl-wave 1.3s ease-in-out; }
+.idl-wave .av-hd { animation: idl-look 1.3s ease-in-out; }
+@keyframes idl-wave { 0%, 100% { transform: none; } 20%, 80% { transform: rotate(-150deg); } 40% { transform: rotate(-120deg); } 60% { transform: rotate(-160deg); } }
+.idl-look .av-hd { animation: idl-look 1.4s ease-in-out; }
+@keyframes idl-look { 0%, 100% { transform: none; } 30% { transform: rotate(-9deg); } 70% { transform: rotate(9deg); } }
+.idl-shimmy .av-all { animation: idl-shimmy 1.2s ease-in-out; }
+.idl-shimmy .av-armL { animation: idl-shimmy-armL 1.2s ease-in-out; }
+.idl-shimmy .av-armR { animation: idl-shimmy-armR 1.2s ease-in-out; }
+@keyframes idl-shimmy { 0%, 100% { transform: none; } 25% { transform: translateX(-5px) skewX(5deg); } 50% { transform: translateX(5px) skewX(-5deg); } 75% { transform: translateX(-4px) skewX(4deg); } }
+@keyframes idl-shimmy-armL { 25%, 75% { transform: rotate(30deg); } 50% { transform: rotate(10deg); } }
+@keyframes idl-shimmy-armR { 25%, 75% { transform: rotate(-10deg); } 50% { transform: rotate(-30deg); } }
+
+/* ---------- crew moments banner ---------- */
+.moments {
+  position: relative; z-index: 3; display: grid; grid-auto-flow: column; align-items: center; justify-items: start; gap: 8px 16px;
+  width: fit-content; max-width: 100%; margin: 0 auto 8px; padding: 8px 14px 8px 8px;
+  background: var(--white); border: var(--line) solid var(--ink); border-radius: 24px; box-shadow: 0 5px 0 var(--ink);
+  font: inherit; color: inherit; text-align: left; touch-action: manipulation;
+  animation: pop-in .5s cubic-bezier(.3, 1.8, .5, 1) .15s both;
+}
+.moments:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
+.mo-title {
+  display: inline-flex; align-items: center; gap: 6px; flex: none;
+  background: var(--pink); color: var(--white); border: 3px solid var(--ink); border-radius: 99px; padding: 3px 14px 3px 6px;
+}
+.mo-title b { font-weight: 900; font-size: 17px; -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; }
+.mo-title svg.ic { width: 26px; height: 26px; }
+.mo { display: inline-flex; align-items: center; gap: 8px; min-width: 0; animation: pop-in .45s cubic-bezier(.3, 1.8, .5, 1) both; animation-delay: calc(.3s + var(--i) * .12s); }
+.mo-av { width: 40px; height: 40px; flex: none; border-radius: 50%; overflow: hidden; border: 3px solid var(--ink); background: var(--sky-l); display: grid; place-items: center; }
+.mo-av svg.ic { width: 70%; height: 70%; }
+.mo-text { display: flex; flex-direction: column; font-weight: 900; font-size: 16px; line-height: 1.15; min-width: 0; }
+.mo-text small { font-weight: 700; font-size: 13px; color: var(--ink-soft); }
+
+.stage-floor {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 64px; z-index: 1;
+  background: repeating-linear-gradient(90deg, #E8A15A 0 60px, #D98E47 60px 120px);
+  border-top: var(--line) solid var(--ink);
+}
+.home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.pot-card, .challenge-card { display: flex; flex-direction: column; gap: 10px; }
+.pot-head { display: flex; gap: 12px; align-items: center; }
+.pot-head svg.ic { width: 56px; height: 56px; flex: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tap-squash { animation: tap-squash-rm .3s ease-out; }
+  @keyframes tap-squash-rm { 40% { transform: scale(1.04, .96); } }
+  .crew-member, .drop-spot { transition: none; }
+  .moments, .mo, .cm-bubble { animation: none; }
+}
+
+/* Wide stages: the banner is one slim line (no timestamps). On a landscape iPad the crew is sized by
+   height while moments show, so Story and Crew Wall stay in view below the stage. */
+@media (min-width: 900px) {
+  .moments { padding: 5px 14px 5px 6px; margin-bottom: 2px; }
+  .mo-av { width: 34px; height: 34px; }
+  .mo-text small { display: none; }
+  .stage-panel.has-moments { padding-top: 12px; }
+  .stage-panel.has-moments .stage-hint { font-size: 21px; }
+}
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .stage-panel.has-moments .crew-member { max-width: min(200px, 22vh); }
+}
+/* Narrower stages: title on top, moments listed under it. */
+@media (max-width: 899px) {
+  .moments { grid-auto-flow: row; gap: 6px; padding: 8px 16px 10px 10px; }
+  .mo-title { justify-self: center; }
+}
+@media (max-width: 640px) {
+  .home-grid { grid-template-columns: 1fr; }
+  .stage-panel { padding: 12px 6px 0; min-height: 0; }
+  .stage-hint { font-size: 19px; }
+  .crew-row { flex-wrap: wrap; row-gap: 0; }
+  .crew-member { flex: 0 0 33.333%; max-width: 33.333%; }
+  .crew-member .tag.new { font-size: 11px; padding: 0 6px; }
+  .cm-name { font-size: 15px; min-height: 36px; padding: 3px 10px; }
+  .cm-bubble { font-size: 16px; min-height: 44px; padding: 0 6px 0 12px; }
+  .stage-floor { height: 48px; }
+  .moments { padding: 6px 12px 8px 8px; }
+  .mo:nth-child(n+4) { display: none; }
+  .mo-av { width: 34px; height: 34px; }
+  .mo-text { font-size: 15px; }
+}
+@media (min-width: 641px) and (max-aspect-ratio: 1/1) {
+  .stage-panel { min-height: 40vh; display: flex; flex-direction: column; }
+  .stage-panel .crew-row { flex: 1; }
+  .crew-member { max-width: 220px; }
+}
+
+/* =========================================================
+   Player page — "My Arcade progress" (stage 8 owns this section of player.js)
+   ========================================================= */
+.pp-progress { display: flex; flex-direction: column; gap: 12px; container-type: inline-size; }
+.pp-progress h2 { display: flex; align-items: center; gap: 10px; font-size: clamp(22px, 2.6vw, 28px); }
+.pp-progress h2 svg.ic { width: 40px; height: 40px; flex: none; }
+.ap-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.ap-row {
+  display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; grid-template-areas: "ic name best" "ic chart chart";
+  align-items: center; gap: 6px 12px;
+  background: var(--cream); border: 3px solid var(--ink); border-radius: 22px; padding: 10px 14px 10px 10px;
+}
+.ap-ic { grid-area: ic; align-self: start; width: 52px; height: 52px; border-radius: 16px; border: 3px solid var(--ink); background: var(--yellow); display: grid; place-items: center; box-shadow: 0 3px 0 var(--ink); }
+.ap-ic.pink { background: var(--pink); } .ap-ic.sky { background: var(--sky); } .ap-ic.mint { background: var(--mint); } .ap-ic.grape { background: var(--grape); } .ap-ic.orange { background: var(--orange); }
+.ap-ic svg.ic { width: 34px; height: 34px; }
+.ap-name { grid-area: name; display: flex; flex-direction: column; min-width: 0; }
+.ap-name b { font-size: 20px; font-weight: 900; line-height: 1.1; }
+.ap-name small { font-weight: 700; color: var(--ink-soft); font-size: 14px; }
+.ap-best { grid-area: best; display: flex; flex-direction: column; align-items: flex-end; line-height: 1; }
+.ap-best b { font-size: 24px; font-weight: 900; }
+.ap-best small { font-size: 12px; font-weight: 800; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .06em; margin-top: 3px; }
+.ap-chart { grid-area: chart; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ap-row .tag.improved { font-size: 14px; }
+/* Roomy card: one line per game. */
+@container (min-width: 600px) {
+  .ap-row { grid-template-columns: 52px minmax(0, 1fr) auto auto; grid-template-areas: "ic name chart best"; gap: 12px 18px; }
+  .ap-ic { align-self: center; }
+  .ap-best { min-width: 70px; }
+}
+/* Where the card sits in the page grid (.pp-grid lives in app.css; this file loads after it):
+   under the hero on wide screens with the side column spanning both rows; full width on a portrait iPad. */
+@media (min-width: 641px) and (max-width: 899px) { .pp-grid > .pp-progress { grid-column: 1 / -1; } }
+@media (min-width: 900px) {
+  .pp-grid { grid-template-rows: auto 1fr; }
+  .pp-grid > .pp-hero { grid-row: 1; grid-column: 1; }
+  .pp-grid > .pp-side { grid-row: 1 / span 2; grid-column: 2; }
+  .pp-grid > .pp-progress { grid-row: 2; grid-column: 1; }
+}

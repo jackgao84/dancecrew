@@ -1,0 +1,31 @@
+/* Crew Combo (co-op). The play area is one canvas; this styles its surface and the end-card chips. */
+.game-screen[data-game="combo"] .game-host { background: var(--cream); }
+.combo-surface { position: absolute; inset: 0; touch-action: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.combo-surface .game-canvas { touch-action: none; }
+
+.combo-end { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.combo-end .tag { background: var(--mint-l); font-size: 16px; }
+.combo-end .tag svg.ic { width: 20px; height: 20px; }
+@media (max-width: 640px) {
+  .combo-end { gap: 6px; }
+  .combo-end .tag { font-size: 15px; padding: 1px 10px; }
+}
+
+/* Side B's teaching hand (side A's is the shell's, or when stacked this layer turned with side A). */
+.combo-ghost-b { position: absolute; inset: 0; z-index: 25; pointer-events: none; }
+.combo-ghost-flip { transform: rotate(180deg); }
+
+/* Phone: a five-figure crew score fits beside the whole title and a real timer bar
+   (a stop-gap until the shared HUD gets a compact score). Smaller teaching hands fit the stacked sides. */
+@media (max-width: 640px) {
+  .game-screen[data-game="combo"] .score-pill { padding: 4px 12px 4px 6px; gap: 4px; font-size: 18px; }
+  .game-screen[data-game="combo"] .score-pill svg.ic { width: 26px; height: 26px; }
+  .game-screen[data-game="combo"] .hud-title b { font-size: 17px; overflow: hidden; text-overflow: ellipsis; } /* ellipsis only as a last resort */
+  .game-screen[data-game="combo"] .ghost-hand { left: -10px; top: -4px; width: 48px; height: 60px; }
+}
+
+/* End card (shell-rendered, scoped here): a five-figure crew score's comma and shadow clear the
+   personal-best line, and the best-moment line wraps as one sentence instead of two flex columns. */
+.game-screen[data-game="combo"] .end-score .big { margin-bottom: 8px; }
+.game-screen[data-game="combo"] .best-moment { display: block; }
+.game-screen[data-game="combo"] .best-moment svg.ic { vertical-align: -6px; margin-right: 2px; }

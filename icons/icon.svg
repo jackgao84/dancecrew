@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#FFD23F"/>
+  <g fill="none" stroke="#FFF0B3" stroke-width="18" opacity=".9">
+    <path d="M256 40 L256 110 M256 402 L256 472 M40 256 L110 256 M402 256 L472 256 M103 103 L152 152 M360 360 L409 409 M409 103 L360 152 M152 360 L103 409"/>
+  </g>
+  <circle cx="256" cy="262" r="178" fill="#FF7AB6" stroke="#3B2A4A" stroke-width="18"/>
+  <polygon points="256,110 294,212 402,214 316,280 348,384 256,322 164,384 196,280 110,214 218,212" fill="#fff" stroke="#3B2A4A" stroke-width="16" stroke-linejoin="round"/>
+  <ellipse cx="232" cy="248" rx="11" ry="15" fill="#3B2A4A"/>
+  <ellipse cx="280" cy="248" rx="11" ry="15" fill="#3B2A4A"/>
+  <path d="M226 284 Q256 318 286 284 Z" fill="#5A2440" stroke="#3B2A4A" stroke-width="8" stroke-linejoin="round"/>
+  <ellipse cx="210" cy="276" rx="12" ry="7" fill="#FF7AB6" opacity=".7"/>
+  <ellipse cx="302" cy="276" rx="12" ry="7" fill="#FF7AB6" opacity=".7"/>
+</svg>

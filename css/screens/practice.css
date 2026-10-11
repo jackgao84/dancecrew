@@ -1,0 +1,43 @@
+/* Practice (#/practice) now plays Beat Battle inside the round shell — its styles live in
+   css/games/beat.css. This file styles the beat-tuning screen (#/calibrate). Owned by stage 2. */
+.cal { max-width: 760px; }
+.cal-stage { display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; padding: 24px 20px 28px; }
+.cal-line { font-size: 22px; font-weight: 800; min-height: 1.5em; display: flex; align-items: center; }
+.cal-tuned {
+  font-size: 46px; font-weight: 900; line-height: 1; color: var(--mint);
+  -webkit-text-stroke: 6px var(--ink); paint-order: stroke fill; text-shadow: 0 4px 0 var(--ink);
+  animation: pop-in .5s cubic-bezier(.3, 1.8, .5, 1) both;
+}
+.cal-pad {
+  position: relative; width: min(260px, 62vw, 38vh); aspect-ratio: 1; padding: 0; border-radius: 50%;
+  display: grid; place-items: center; touch-action: none; -webkit-touch-callout: none;
+  background: radial-gradient(circle at 36% 30%, #fff 0 9%, var(--grape) 11%);
+  border: 6px solid var(--ink); box-shadow: 0 9px 0 var(--ink); transition: opacity .3s;
+}
+.cal-pad > svg.ic { width: 40%; height: 40%; }
+.cal-ring { position: absolute; inset: -18px; border-radius: 50%; border: 7px solid var(--yellow); opacity: 0; pointer-events: none; }
+.cal-pad.flash .cal-ring { animation: cal-flash .45s ease-out; }
+@keyframes cal-flash { from { opacity: 1; transform: scale(.88); } to { opacity: 0; transform: scale(1.12); } }
+/* Before the clicks start, the circle breathes gently: "tap me when it's time". */
+.cal-stage[data-phase="idle"] .cal-pad, .cal-stage[data-phase="again"] .cal-pad { animation: cal-idle 1.8s ease-in-out infinite; }
+@keyframes cal-idle { 0%, 100% { transform: none; } 50% { transform: scale(1.04); } }
+.cal-stage[data-phase="tuned"] .cal-pad { background: radial-gradient(circle at 36% 30%, #fff 0 9%, var(--mint) 11%); }
+.cal-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 100%; }
+.cal-dots i { width: 20px; height: 20px; border-radius: 50%; border: 3px solid var(--ink); background: var(--white); transition: background .15s; }
+.cal-dots i.beat { background: var(--yellow); }
+.cal-dots i.tap { background: var(--mint); }
+.cal-actions { display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 84px; justify-content: center; }
+
+@media (max-width: 640px) {
+  .cal-stage { padding: 18px 12px 22px; gap: 14px; }
+  .cal-line { font-size: 19px; }
+  .cal-dots { gap: 6px; }
+  .cal-dots i { width: 18px; height: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cal-stage .cal-pad { animation: none !important; }
+  .cal-tuned { animation: cal-fade .3s both; }
+  @keyframes cal-fade { from { opacity: 0; } }
+  .cal-pad.flash .cal-ring { animation-name: cal-flash-still; }
+  @keyframes cal-flash-still { from { opacity: 1; } to { opacity: 0; } }
+}
